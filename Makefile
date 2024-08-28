@@ -3,7 +3,10 @@ FLAGS = -Wall -Wextra -Werror
 NAME = philo
 SRC = main.c \
 	  philo.c \
-	  safe_functions.c
+	  safe_functions.c \
+	  utils.c \
+	  dinner.c \
+	  init.c
 OBJ = $(SRC:.c=.o)
 
 all: $(NAME)
