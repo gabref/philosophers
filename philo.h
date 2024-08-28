@@ -17,6 +17,7 @@
 typedef enum e_action
 {
 	EAT,
+	DONE_EAT,
 	THINK,
 	SLEEP,
 	DIED,

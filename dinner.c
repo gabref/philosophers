@@ -5,6 +5,12 @@ void	eat(t_table *t, t_philo *p)
 {
 	pthread_mutex_lock(&(t->forks[p->left_fork_id]));
 	print(t, p, TAKEN_FORK);
+	if (t->philo_nb == 1)
+	{
+		pthread_mutex_unlock(&(t->forks[p->left_fork_id]));
+		smart_sleep(t->time_to_die * 2, t);
+		return ;
+	}
 	pthread_mutex_lock(&(t->forks[p->right_fork_id]));
 	print(t, p, TAKEN_FORK);
 	pthread_mutex_lock(&(t->meals_check));
@@ -29,7 +35,7 @@ void	*start_philo(void *philo_ptr)
 	while (!(t->stop))
 	{
 		eat(t, p);
-		if (t->all_ate || p->meals >= t->max_meals)
+		if (t->all_ate || (t->max_meals > 0 && p->meals >= t->max_meals))
 			break ;
 		print(t, p, SLEEP);
 		smart_sleep(t->time_to_sleep, t);
@@ -44,11 +50,12 @@ void	freddy_krueger(t_table *t)
 
 	while (!(t->stop) && !(t->all_ate))
 	{
-		i = 0;
-		while (i < t->philo_nb && !(t->stop))
+		i = -1;
+		while (++i < t->philo_nb && !(t->stop))
 		{
 			pthread_mutex_lock(&(t->meals_check));
-			if (timestamp() - t->philo[i].last_meal > t->time_to_die)
+			if (timestamp() - t->philo[i].last_meal > t->time_to_die
+				&& t->philo[i].meals != t->max_meals)
 			{
 				print(t, &(t->philo[i]), DIED);
 				t->stop = 1;
@@ -88,8 +95,11 @@ int	start(t_table *t)
 	t->first_timestamp = timestamp();
 	i = -1;
 	while (++i < t->philo_nb)
+	{
 		pthread_create(&(t->philo[i].thread_id), NULL, &start_philo,
 			&(t->philo[i]));
+		t->philo[i].last_meal = timestamp();
+	}
 	freddy_krueger(t);
 	end(t);
 	return (0);

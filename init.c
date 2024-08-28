@@ -6,7 +6,7 @@
 /*   By: galves-f <galves-f@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 11:52:22 by galves-f          #+#    #+#             */
-/*   Updated: 2024/08/28 11:52:59 by galves-f         ###   ########.fr       */
+/*   Updated: 2024/08/28 13:52:37 by galves-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,14 +53,18 @@ int	init(char **av, t_table *t)
 	t->max_meals = -1;
 	t->stop = 0;
 	t->all_ate = 0;
-	if (t->philo_nb < 2 || t->time_to_die < 0 || t->time_to_eat < 0
+	if (t->philo_nb < 1 || t->time_to_die < 0 || t->time_to_eat < 0
 		|| t->time_to_sleep < 0 || t->philo_nb > MAX_PHILOSOPHERS)
 	{
 		printf("Invalid argument\n");
 		return (-1);
 	}
 	if (av[5])
+	{
 		t->max_meals = ft_atoi(av[5]);
+		if (t->max_meals < 1)
+			return (-1);
+	}
 	if (pthread_mutex_init(&(t->print), NULL) != 0)
 		return (-1);
 	if (pthread_mutex_init(&(t->meals_check), NULL) != 0)

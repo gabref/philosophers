@@ -6,7 +6,7 @@
 /*   By: galves-f <galves-f@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 11:51:30 by galves-f          #+#    #+#             */
-/*   Updated: 2024/08/28 12:45:45 by galves-f         ###   ########.fr       */
+/*   Updated: 2024/08/28 13:28:59 by galves-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,8 @@ void print(t_table *t, t_philo *p, t_action action)
 			printf("has taken a fork\n");
 		else if (action == EAT)
 			printf("is eating\n");
+		else if (action == EAT)
+			printf("done eating\n");
 		else if (action == THINK)
 			printf("is thinking\n");
 		else if (action == SLEEP)
