@@ -6,7 +6,7 @@
 /*   By: galves-f <galves-f@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 11:51:30 by galves-f          #+#    #+#             */
-/*   Updated: 2024/08/30 08:35:45 by galves-f         ###   ########.fr       */
+/*   Updated: 2024/08/30 09:00:34 by galves-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ void	smart_sleep(long long time, t_table *t)
 
 void	print(t_table *t, t_philo *p, t_action action)
 {
-	pthread_mutex_lock(&(t->print));
+	sem_wait(t->print);
 	if (!(t->stop))
 	{
 		printf("%lli %d ", timestamp() - t->first_timestamp, p->id);
@@ -77,5 +77,5 @@ void	print(t_table *t, t_philo *p, t_action action)
 		else
 			printf("died\n");
 	}
-	pthread_mutex_unlock(&(t->print));
+	sem_post(t->print);
 }

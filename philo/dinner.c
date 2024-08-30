@@ -1,50 +1,34 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   dinner.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: galves-f <galves-f@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/08/30 08:39:10 by galves-f          #+#    #+#             */
+/*   Updated: 2024/08/30 09:27:45 by galves-f         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "philo.h"
-#include <pthread.h>
 
-void	eat(t_table *t, t_philo *p)
+void	check_everyone_ate(t_table *t)
 {
-	pthread_mutex_lock(&(t->forks[p->left_fork_id]));
-	print(t, p, TAKEN_FORK);
-	if (t->philo_nb == 1)
-	{
-		pthread_mutex_unlock(&(t->forks[p->left_fork_id]));
-		smart_sleep(t->time_to_die * 2, t);
+	int	i;
+
+	i = 0;
+	if (t->max_meals == -1)
 		return ;
-	}
-	pthread_mutex_lock(&(t->forks[p->right_fork_id]));
-	print(t, p, TAKEN_FORK);
-	pthread_mutex_lock(&(t->meals_check));
-	print(t, p, EAT);
-	p->last_meal = timestamp();
-	pthread_mutex_unlock(&(t->meals_check));
-	smart_sleep(t->time_to_eat, t);
-	(p->meals)++;
-	pthread_mutex_unlock(&(t->forks[p->left_fork_id]));
-	pthread_mutex_unlock(&(t->forks[p->right_fork_id]));
-}
-
-void	*start_philo(void *philo_ptr)
-{
-	t_philo	*p;
-	t_table	*t;
-
-	p = (t_philo *)philo_ptr;
-	t = p->table;
-	if (p->id % 2)
-		usleep(15000);
-	while (!(t->stop))
+	while (i < t->philo_nb)
 	{
-		eat(t, p);
-		if (t->all_ate || (t->max_meals > 0 && p->meals >= t->max_meals))
-			break ;
-		print(t, p, SLEEP);
-		smart_sleep(t->time_to_sleep, t);
-		print(t, p, THINK);
+		if (t->philo[i].meals < t->max_meals)
+			return ;
+		i++;
 	}
-	return (NULL);
+	t->all_ate = 1;
 }
 
-void	freddy_krueger(t_table *t)
+void	*freddy_krueger(t_table *t)
 {
 	int	i;
 
@@ -65,13 +49,9 @@ void	freddy_krueger(t_table *t)
 		}
 		if (t->stop)
 			break ;
-		i = 0;
-		while (t->max_meals != -1 && i < t->philo_nb
-			&& t->philo[i].meals >= t->max_meals)
-			i++;
-		if (i == t->philo_nb)
-			t->all_ate = 1;
+		check_everyone_ate(t);
 	}
+	return (NULL);
 }
 
 void	end(t_table *t)
