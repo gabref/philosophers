@@ -6,7 +6,7 @@
 /*   By: galves-f <galves-f@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 11:52:22 by galves-f          #+#    #+#             */
-/*   Updated: 2024/08/30 09:34:58 by galves-f         ###   ########.fr       */
+/*   Updated: 2024/08/30 10:01:47 by galves-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,8 @@ int	check_args(int ac, char **av)
 	if (ac < 5 || ac > 6)
 	{
 		printf("Usage: %s number_of_philosophers time_to_die time_to_eat "
-				"time_to_sleep [number_of_times_each_philosopher_must_eat]",
-				av[0]);
+			"time_to_sleep [number_of_times_each_philosopher_must_eat]",
+			av[0]);
 		return (1);
 	}
 	return (0);
