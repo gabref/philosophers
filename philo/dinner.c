@@ -6,13 +6,13 @@
 /*   By: galves-f <galves-f@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/30 08:39:10 by galves-f          #+#    #+#             */
-/*   Updated: 2024/08/30 09:27:45 by galves-f         ###   ########.fr       */
+/*   Updated: 2024/08/30 10:02:12 by galves-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	check_everyone_ate(t_table *t)
+void	check_stop(t_table *t)
 {
 	int	i;
 
@@ -49,7 +49,7 @@ void	*freddy_krueger(t_table *t)
 		}
 		if (t->stop)
 			break ;
-		check_everyone_ate(t);
+		check_stop(t);
 	}
 	return (NULL);
 }
