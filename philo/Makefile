@@ -6,6 +6,7 @@ SRC = main.c \
 	  safe_functions.c \
 	  utils.c \
 	  dinner.c \
+	  meals.c \
 	  init.c
 OBJ = $(SRC:.c=.o)
 

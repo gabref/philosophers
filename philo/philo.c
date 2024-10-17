@@ -6,7 +6,7 @@
 /*   By: galves-f <galves-f@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/30 08:44:38 by galves-f          #+#    #+#             */
-/*   Updated: 2024/10/17 17:03:27 by galves-f         ###   ########.fr       */
+/*   Updated: 2024/10/17 18:10:31 by galves-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,12 +47,10 @@ void	eat(t_table *t, t_philo *p)
 {
 	if (!lock_forks(t, p))
 		return ;
-	pthread_mutex_lock(&(t->meals_check));
 	print(t, p, EAT);
-	p->last_meal = timestamp();
-	pthread_mutex_unlock(&(t->meals_check));
+	set_philo_meals(t, p, LAST_MEAL, timestamp());
 	smart_sleep(t->time_to_eat, t);
-	(p->meals)++;
+	increment_philo_meals(t, p);
 	unlock_forks(t, p);
 }
 
@@ -68,13 +66,9 @@ void	*start_philo(void *philo_ptr)
 	while (!stop_check(t))
 	{
 		eat(t, p);
-		pthread_mutex_lock(&(t->meals_check));
-		if (t->all_ate || (t->max_meals > 0 && p->meals >= t->max_meals))
-		{
-			pthread_mutex_unlock(&(t->meals_check));
+		if (get_philo_meals(t, NULL, ALL_ATE) || (t->max_meals > 0
+				&& get_philo_meals(t, p, MEALS) >= t->max_meals))
 			break ;
-		}
-		pthread_mutex_unlock(&(t->meals_check));
 		print(t, p, SLEEP);
 		smart_sleep(t->time_to_sleep, t);
 		print(t, p, THINK);

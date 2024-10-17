@@ -6,7 +6,7 @@
 /*   By: galves-f <galves-f@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/30 08:35:59 by galves-f          #+#    #+#             */
-/*   Updated: 2024/10/17 16:10:57 by galves-f         ###   ########.fr       */
+/*   Updated: 2024/10/17 17:33:27 by galves-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,14 @@ typedef enum e_action
 	TAKEN_FORK,
 }					t_action;
 
-struct	s_table;
+typedef enum e_meals_check
+{
+	MEALS,
+	LAST_MEAL,
+	ALL_ATE,
+}					t_meals_check;
+
+struct s_table;
 
 typedef struct s_philo
 {
@@ -78,5 +85,10 @@ void				check_everyone_ate(t_table *t);
 void				eat(t_table *t, t_philo *p);
 void				*start_philo(void *philo_ptr);
 int					stop_check(t_table *t);
+int					get_philo_meals(t_table *t, t_philo *p,
+						t_meals_check check);
+void				set_philo_meals(t_table *t, t_philo *p, t_meals_check check,
+						int value);
+void				increment_philo_meals(t_table *t, t_philo *p);
 
 #endif

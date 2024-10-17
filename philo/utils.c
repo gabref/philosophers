@@ -6,7 +6,7 @@
 /*   By: galves-f <galves-f@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 11:51:30 by galves-f          #+#    #+#             */
-/*   Updated: 2024/10/17 15:58:45 by galves-f         ###   ########.fr       */
+/*   Updated: 2024/10/17 17:12:56 by galves-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,14 +47,16 @@ long long	timestamp(void)
 
 void	smart_sleep(long long time, t_table *t)
 {
+	long long	start;
 	long long	current;
 
-	current = timestamp();
+	start = timestamp();
 	while (!stop_check(t))
 	{
-		if (timestamp() - current >= time)
+		current = timestamp();
+		if ((current - start) >= time)
 			break ;
-		usleep(50);
+		usleep(100);
 	}
 }
 
