@@ -6,7 +6,7 @@
 /*   By: galves-f <galves-f@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 11:52:22 by galves-f          #+#    #+#             */
-/*   Updated: 2024/08/30 08:38:54 by galves-f         ###   ########.fr       */
+/*   Updated: 2024/10/17 15:57:13 by galves-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,8 @@ int	init_mutexes(t_table *t)
 	if (pthread_mutex_init(&(t->print), NULL) != 0)
 		return (-1);
 	if (pthread_mutex_init(&(t->meals_check), NULL) != 0)
+		return (-1);
+	if (pthread_mutex_init(&(t->stop_check), NULL) != 0)
 		return (-1);
 	return (0);
 }

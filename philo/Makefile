@@ -1,5 +1,5 @@
 CC = cc
-FLAGS = -Wall -Wextra -Werror
+FLAGS = -Wall -Wextra -Werror -ggdb -fsanitize=thread
 NAME = philo
 SRC = main.c \
 	  philo.c \

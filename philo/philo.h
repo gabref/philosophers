@@ -6,7 +6,7 @@
 /*   By: galves-f <galves-f@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/30 08:35:59 by galves-f          #+#    #+#             */
-/*   Updated: 2024/08/30 08:45:32 by galves-f         ###   ########.fr       */
+/*   Updated: 2024/10/17 16:10:57 by galves-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ typedef struct s_table
 	pthread_mutex_t	forks[MAX_PHILOSOPHERS];
 	pthread_mutex_t	print;
 	pthread_mutex_t	meals_check;
+	pthread_mutex_t	stop_check;
 }					t_table;
 
 void				*safe_malloc(size_t size);
@@ -76,5 +77,6 @@ void				smart_sleep(long long time, t_table *t);
 void				check_everyone_ate(t_table *t);
 void				eat(t_table *t, t_philo *p);
 void				*start_philo(void *philo_ptr);
+int					stop_check(t_table *t);
 
 #endif

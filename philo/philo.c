@@ -6,7 +6,7 @@
 /*   By: galves-f <galves-f@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/30 08:44:38 by galves-f          #+#    #+#             */
-/*   Updated: 2024/08/30 08:44:50 by galves-f         ###   ########.fr       */
+/*   Updated: 2024/10/17 16:06:30 by galves-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,11 +43,16 @@ void	*start_philo(void *philo_ptr)
 	t = p->table;
 	if (p->id % 2)
 		usleep(15000);
-	while (!(t->stop))
+	while (!stop_check(t))
 	{
 		eat(t, p);
+		pthread_mutex_lock(&(t->meals_check));
 		if (t->all_ate || (t->max_meals > 0 && p->meals >= t->max_meals))
+		{
+			pthread_mutex_unlock(&(t->meals_check));
 			break ;
+		}
+		pthread_mutex_unlock(&(t->meals_check));
 		print(t, p, SLEEP);
 		smart_sleep(t->time_to_sleep, t);
 		print(t, p, THINK);
