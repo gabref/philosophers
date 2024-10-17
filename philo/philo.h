@@ -6,7 +6,7 @@
 /*   By: galves-f <galves-f@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/30 08:35:59 by galves-f          #+#    #+#             */
-/*   Updated: 2024/10/17 17:33:27 by galves-f         ###   ########.fr       */
+/*   Updated: 2024/10/17 18:48:38 by galves-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ typedef enum e_meals_check
 	ALL_ATE,
 }					t_meals_check;
 
-struct s_table;
+struct	s_table;
 
 typedef struct s_philo
 {

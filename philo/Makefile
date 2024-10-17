@@ -1,5 +1,6 @@
 CC = cc
-FLAGS = -Wall -Wextra -Werror -ggdb -fsanitize=thread
+FLAGS = -Wall -Wextra -Werror
+# FLAGS = -Wall -Wextra -Werror -ggdb -fsanitize=thread
 NAME = philo
 SRC = main.c \
 	  philo.c \
@@ -27,3 +28,6 @@ fclean: clean
 re: fclean all
 
 .PHONY: all clean fclean re
+
+# setarch $(uname -m) -R ./philo 5 800 200 200
+# The issue is caused by Address Space Layout Randomization (ASLR) interfering with ThreadSanitizer's shadow memory tracking. ASLR randomizes memory addresses, and TSan expects predictable memory ranges to monitor memory access. By using the setarch command with the -R flag, I disable ASLR, which allows TSan to function correctly. This workaround is necessary in environments where TSan's shadow memory conflicts with the system's memory layout.
