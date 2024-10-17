@@ -6,32 +6,54 @@
 /*   By: galves-f <galves-f@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/30 08:44:38 by galves-f          #+#    #+#             */
-/*   Updated: 2024/10/17 16:06:30 by galves-f         ###   ########.fr       */
+/*   Updated: 2024/10/17 17:03:27 by galves-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	eat(t_table *t, t_philo *p)
+int	lock_forks(t_table *t, t_philo *p)
 {
-	pthread_mutex_lock(&(t->forks[p->left_fork_id]));
+	int	first_fork;
+	int	second_fork;
+
+	first_fork = p->right_fork_id;
+	second_fork = p->left_fork_id;
+	if (p->left_fork_id < p->right_fork_id)
+	{
+		first_fork = p->left_fork_id;
+		second_fork = p->right_fork_id;
+	}
+	pthread_mutex_lock(&(t->forks[first_fork]));
 	print(t, p, TAKEN_FORK);
 	if (t->philo_nb == 1)
 	{
-		pthread_mutex_unlock(&(t->forks[p->left_fork_id]));
+		pthread_mutex_unlock(&(t->forks[first_fork]));
 		smart_sleep(t->time_to_die * 2, t);
-		return ;
+		return (0);
 	}
-	pthread_mutex_lock(&(t->forks[p->right_fork_id]));
+	pthread_mutex_lock(&(t->forks[second_fork]));
 	print(t, p, TAKEN_FORK);
+	return (1);
+}
+
+void	unlock_forks(t_table *t, t_philo *p)
+{
+	pthread_mutex_unlock(&(t->forks[p->left_fork_id]));
+	pthread_mutex_unlock(&(t->forks[p->right_fork_id]));
+}
+
+void	eat(t_table *t, t_philo *p)
+{
+	if (!lock_forks(t, p))
+		return ;
 	pthread_mutex_lock(&(t->meals_check));
 	print(t, p, EAT);
 	p->last_meal = timestamp();
 	pthread_mutex_unlock(&(t->meals_check));
 	smart_sleep(t->time_to_eat, t);
 	(p->meals)++;
-	pthread_mutex_unlock(&(t->forks[p->left_fork_id]));
-	pthread_mutex_unlock(&(t->forks[p->right_fork_id]));
+	unlock_forks(t, p);
 }
 
 void	*start_philo(void *philo_ptr)
